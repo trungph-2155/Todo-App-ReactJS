@@ -1,11 +1,12 @@
 import './App.css';
 import React from 'react';
-import { Layout, Menu, Form, Input, Button, Divider, Table, Space, Tag } from 'antd';
+import WorkTable from './WorkTable';
+import InputForm from './InputForm';
+import { Layout, Menu, Divider } from 'antd';
 import { UnorderedListOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
-const {Column} = Table;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -39,7 +40,7 @@ export default class App extends React.Component {
       case "done":
         return "green";
       case "in progress":
-        return "gold";                 
+        return "gold";
       default:
         return "cyan";
     }
@@ -77,68 +78,35 @@ export default class App extends React.Component {
 
   render(){
     return (
-      <div>
-        <Layout className="content-layout">
-          <Header>
-            <a className="title" href="./">
-              To Do App
-            </a>
-          </Header>
-          <Layout>
-            <Sider>
-              <Menu
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
-                mode="inline"
-                className="sidebar"
-              >
-                <SubMenu key="sub1" icon={<UnorderedListOutlined />} title="Menu">
-                  <Menu.ItemGroup key="g1" title="To Do">
-                    <Menu.Item key="1">List</Menu.Item>
-                  </Menu.ItemGroup>
-                </SubMenu>
-              </Menu>
-            </Sider>
-            <Content className="todo-container">
-                <Form.Item>
-                  <Input 
-                    placeholder="Give me some information" 
-                    className="todo-input"
-                    value = {this.state.value}
-                    onChange={this.handleChangeVal}
-                  />
-                </Form.Item>
-                <Button type="primary" onClick={this.addWork} className="submit-btn" disabled={!this.state.value}>Submit</Button>
-              <Divider></Divider>
-              <Table dataSource={this.state.list} className="table">
-                  <Column title="Work" dataIndex="work" key="work"/>
-                  <Column title="Status" dataIndex="status" key="status"
-                    render = {
-                      (status) => (
-                        <Tag color={this.colorStatus(status)} key={status}>
-                          {status.toUpperCase()}
-                        </Tag>
-                      )
-                    }
-                  />
-                  <Column title="Action" key="action"
-                    render = {(text, record, dataIndex) => (
-                        <Space size="middle">
-                          <button onClick={this.setAsDone.bind(this, dataIndex)}>Set as Done</button>
-                          <button onClick={this.setInProgress.bind(this, dataIndex)}>Set as In Progress</button>
-                          <button onClick={this.deleteWork.bind(this, record.key)}>Delete</button>
-                        </Space>
-                      )
-                    }
-                  />
-              </Table>
-            </Content>
-          </Layout>
-          <Footer>Footer</Footer>
+      <Layout className="content-layout">
+        <Header>
+          <a className="title" href="./">
+            To Do App
+          </a>
+        </Header>
+        <Layout>
+          <Sider>
+            <Menu
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+              mode="inline"
+              className="sidebar"
+            >
+              <SubMenu key="sub1" icon={<UnorderedListOutlined />} title="Menu">
+                <Menu.ItemGroup key="g1" title="To Do">
+                  <Menu.Item key="1">List</Menu.Item>
+                </Menu.ItemGroup>
+              </SubMenu>
+            </Menu>
+          </Sider>
+          <Content className="todo-container">
+            <InputForm />
+            <Divider></Divider>
+            <WorkTable list={this.state.list}/>
+          </Content>
         </Layout>
-      </div>
+        <Footer>Footer</Footer>
+      </Layout>
     );
   }
 }
-
-
