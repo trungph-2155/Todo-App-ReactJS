@@ -1,17 +1,11 @@
 import './App.css';
 import React from 'react';
-import { Layout, Menu, Form, Input, Button, Divider, Table } from 'antd';
+import { Layout, Menu, Form, Input, Button, Divider, Table, Space, Tag } from 'antd';
 import { UnorderedListOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
-const columns = [
-  {
-    title: 'Work',
-    dataIndex: 'work',
-    key: 'work',
-  },
-];
+const {Column} = Table;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,14 +16,13 @@ export default class App extends React.Component {
     };
   }
 
-  handleClick = (event) => {
+  addWork = (event) => {
     event.preventDefault();
-    const count = this.state.list.count + 1;
     const value = this.state.value;
-    const item = {key: count, work: value};
+    const count = this.state.list.length;
+    const item = {key: count + 1, work: value, status: "new"};
     this.setState(state => {
       const list= state.list.concat(item)
-
       return {
         list,
         value: '',
@@ -41,14 +34,55 @@ export default class App extends React.Component {
     this.setState({ value: event.target.value });
   }
 
+  colorStatus = (status) => {
+    switch (status) {
+      case "done":
+        return "green";
+      case "in progress":
+        return "gold";                 
+      default:
+        return "cyan";
+    }
+  }
+
+  setAsDone = (index) => {
+    console.log(this.state.list[index]);
+    this.setState(state => {
+      state.list[index].status = "done"
+      const list = state.list
+      return {
+        list,
+      };
+    });
+  }
+
+  setInProgress = (index) => {
+    this.setState(state => {
+      state.list[index].status = "in progress"
+      const list = state.list
+      return {
+        list,
+      };
+    });
+  }
+
+  deleteWork = (key) => {
+    this.setState(state => {
+      const list = state.list.filter(item => item.key !== key);
+      return {
+        list,
+      };
+    });
+  }
+
   render(){
     return (
       <div>
         <Layout className="content-layout">
           <Header>
-            <h1 className="title">
+            <a className="title" href="./">
               To Do App
-            </h1>
+            </a>
           </Header>
           <Layout>
             <Sider>
@@ -58,7 +92,7 @@ export default class App extends React.Component {
                 mode="inline"
                 className="sidebar"
               >
-                <SubMenu key="sub1" icon={<UnorderedListOutlined />} title="Navigation One">
+                <SubMenu key="sub1" icon={<UnorderedListOutlined />} title="Menu">
                   <Menu.ItemGroup key="g1" title="To Do">
                     <Menu.Item key="1">List</Menu.Item>
                   </Menu.ItemGroup>
@@ -74,14 +108,30 @@ export default class App extends React.Component {
                     onChange={this.handleChangeVal}
                   />
                 </Form.Item>
-                <Button type="primary" onClick={this.handleClick} className="submit-btn" disabled={!this.state.value}>Submit</Button>
+                <Button type="primary" onClick={this.addWork} className="submit-btn" disabled={!this.state.value}>Submit</Button>
               <Divider></Divider>
-              <Table dataSource={this.state.list} columns={columns} className="table"/>
-              {/* <ul>
-                {this.state.list.map(item => (
-                  <li key={item.key}>{item.work}</li>
-                ))}
-              </ul> */}
+              <Table dataSource={this.state.list} className="table">
+                  <Column title="Work" dataIndex="work" key="work"/>
+                  <Column title="Status" dataIndex="status" key="status"
+                    render = {
+                      (status) => (
+                        <Tag color={this.colorStatus(status)} key={status}>
+                          {status.toUpperCase()}
+                        </Tag>
+                      )
+                    }
+                  />
+                  <Column title="Action" key="action"
+                    render = {(text, record, dataIndex) => (
+                        <Space size="middle">
+                          <button onClick={this.setAsDone.bind(this, dataIndex)}>Set as Done</button>
+                          <button onClick={this.setInProgress.bind(this, dataIndex)}>Set as In Progress</button>
+                          <button onClick={this.deleteWork.bind(this, record.key)}>Delete</button>
+                        </Space>
+                      )
+                    }
+                  />
+              </Table>
             </Content>
           </Layout>
           <Footer>Footer</Footer>
