@@ -68,6 +68,20 @@
   width: 100vh;
 }
 
+.table th{
+  text-align: center !important;
+}
+
+.table tr{
+  text-align: center !important;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .todo-input {
   width: 500px;
   height: 50px;

@@ -14,11 +14,12 @@ export default class App extends React.Component {
     this.state = {
       value: "",
       list: [],
+      key: 0,
+      index: 0
     };
   }
 
-  addWork = (event) => {
-    event.preventDefault();
+  addWork = () => {
     const value = this.state.value;
     const count = this.state.list.length;
     const item = {key: count + 1, work: value, status: "new"};
@@ -31,52 +32,52 @@ export default class App extends React.Component {
     });
   }
 
-  handleChangeVal = (event) => {
-    this.setState({ value: event.target.value });
-  }
-
-  colorStatus = (status) => {
-    switch (status) {
-      case "done":
-        return "green";
-      case "in progress":
-        return "gold";
-      default:
-        return "cyan";
-    }
+  handleChangeVal = (value) => {
+    this.setState({ value: value });
   }
 
   setAsDone = (index) => {
-    console.log(this.state.list[index]);
-    this.setState(state => {
-      state.list[index].status = "done"
-      const list = state.list
-      return {
-        list,
-      };
-    });
+    if(this.state.list.length > 0) {
+      this.setState(state => {
+        state.list[index].status = "done"
+        const list = state.list
+        return {
+          list,
+        };
+      });
+    }
   }
 
   setInProgress = (index) => {
-    this.setState(state => {
-      state.list[index].status = "in progress"
-      const list = state.list
-      return {
-        list,
-      };
-    });
+    if (this.state.list.length > 0) {
+      this.setState(state => {
+        state.list[index].status = "in progress"
+        const list = state.list
+        return {
+          list,
+        };
+      });
+    }
+
   }
 
   deleteWork = (key) => {
-    this.setState(state => {
-      const list = state.list.filter(item => item.key !== key);
-      return {
-        list,
-      };
-    });
+    if (this.state.list.length > 0) {
+      this.setState(state => {
+        const list = state.list.filter(item => item.key !== key);
+        return {
+          list,
+        };
+      });
+    }
+
   }
 
   render(){
+    const value = this.state.value;
+    const key = this.state.key;
+    const index = this.state.index;
+
     return (
       <Layout className="content-layout">
         <Header>
@@ -100,9 +101,20 @@ export default class App extends React.Component {
             </Menu>
           </Sider>
           <Content className="todo-container">
-            <InputForm />
+            <InputForm
+              value = {value}
+              onValueChange={this.handleChangeVal}
+              onSubmitValue = {this.addWork}
+            />
             <Divider></Divider>
-            <WorkTable list={this.state.list}/>
+            <WorkTable
+              list={this.state.list}
+              key = {key}
+              index = {index}
+              setDone={this.setAsDone}
+              setIP={this.setInProgress}
+              delete={this.deleteWork}
+            />
           </Content>
         </Layout>
         <Footer>Footer</Footer>
