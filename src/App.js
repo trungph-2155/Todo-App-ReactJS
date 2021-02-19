@@ -58,7 +58,6 @@ export default class App extends React.Component {
         };
       });
     }
-    
   }
 
   deleteWork = (key) => {
@@ -69,8 +68,7 @@ export default class App extends React.Component {
           list,
         };
       });
-    }
-    
+    }  
   }
 
   render(){
@@ -101,7 +99,7 @@ export default class App extends React.Component {
             </Menu>
           </Sider>
           <Content className="todo-container">
-            <InputForm 
+            <InputForm
               value = {value}
               onValueChange={this.handleChangeVal}
               onSubmitValue = {this.addWork}

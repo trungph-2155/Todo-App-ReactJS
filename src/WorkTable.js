@@ -28,8 +28,6 @@ export default class WorkTable extends React.Component {
   }
 
   render(){
-
-  
     return (
       <div>
         <Table dataSource={this.props.list} className="table">
@@ -46,9 +44,9 @@ export default class WorkTable extends React.Component {
             <Column title="Action" key="action"
               render = {(text, record, dataIndex) => (
                   <Space size="middle">
-                    {/* <Button onClick={this.setAsDone(dataIndex)} className="submit-btn">Submit</Button>
-                    <Button onClick={this.setInProgress(dataIndex)} className="submit-btn">Submit</Button>
-                    <Button onClick={this.deleteWork(record.key)} className="submit-btn">Submit</Button> */}
+                    <Button onClick={() => this.setAsDone(dataIndex)} className="submit-btn">Done</Button>
+                    <Button onClick={() => this.setInProgress(dataIndex)} className="submit-btn">In Progress</Button>
+                    <Button onClick={() => this.deleteWork(record.key)} className="submit-btn">Delete</Button>
                   </Space>
                 )
               }

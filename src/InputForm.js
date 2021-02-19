@@ -16,7 +16,7 @@ export default class InputForm extends React.Component {
     const value = this.props.value;
 
     return (
-      <div>
+      <div className="input-container">
         <Form.Item>
           <Input
             placeholder="Give me some information"
