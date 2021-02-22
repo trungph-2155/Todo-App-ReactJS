@@ -12,24 +12,10 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
       list: [],
       key: 0,
       index: 0
     };
-  }
-
-  addWork = () => {
-    const value = this.state.value;
-    const count = this.state.list.length;
-    const item = {key: count + 1, work: value, status: "new"};
-    this.setState(state => {
-      const list= state.list.concat(item)
-      return {
-        list,
-        value: '',
-      };
-    });
   }
 
   handleChangeVal = (value) => {
@@ -72,7 +58,6 @@ export default class App extends React.Component {
   }
 
   render(){
-    const value = this.state.value;
     const key = this.state.key;
     const index = this.state.index;
 
@@ -99,11 +84,7 @@ export default class App extends React.Component {
             </Menu>
           </Sider>
           <Content className="todo-container">
-            <InputForm
-              value = {value}
-              onValueChange={this.handleChangeVal}
-              onSubmitValue = {this.addWork}
-            />
+            <InputForm />
             <Divider></Divider>
             <WorkTable
               list={this.state.list}

@@ -1,32 +1,41 @@
 import React from 'react';
 import { Button, Form, Input } from 'antd';
+import { connect } from 'react-redux';
+import { addWork } from './redux/actions';
 
-export default class InputForm extends React.Component {
-
-  handleChangeVal = (e) => {
-    this.props.onValueChange(e.target.value);
+class InputForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { input: "" };
   }
 
-  addWork = (e) => {
-    e.preventDefault();
-    this.props.onSubmitValue();
+  handleChangeVal = (input) => {
+    this.setState({ input });
+  }
+
+  addWork = () => {
+    this.props.addWork(this.state.input)
+    this.setState({ input: "" });
   }
 
   render(){
-    const value = this.props.value;
-
     return (
       <div className="input-container">
         <Form.Item>
           <Input
             placeholder="Give me some information"
             className="todo-input"
-            value = {value}
-            onChange={this.handleChangeVal}
+            value = {this.state.input}
+            onChange={e => this.handleChangeVal(e.target.value)}
           />
         </Form.Item>
-        <Button type="primary" onClick={this.addWork} className="submit-btn" disabled={!value}>Submit</Button>
+        <Button type="primary" onClick={this.addWork} className="submit-btn" disabled={!this.state.input}>Submit</Button>
       </div>
     );
   }
 }
+
+export default connect(
+  null,
+  { addWork }
+)(InputForm)

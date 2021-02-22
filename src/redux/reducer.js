@@ -10,9 +10,9 @@ function nextWorkKey(works) {
   return maxKey + 1
 }
 
-export default function appReducer(state = initialState, action) {
+export default function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case 'works/addWork': {
+    case 'ADD_WORK': {
       return {
         ...state,
         works: [
@@ -25,7 +25,7 @@ export default function appReducer(state = initialState, action) {
         ]
       }
     }
-    case 'works/setDone': {
+    case 'SET_DONE': {
       return {
         ...state,
         works: state.works.map(work => {
@@ -40,7 +40,7 @@ export default function appReducer(state = initialState, action) {
         })
       }
     }
-    case 'works/setIp': {
+    case 'SET_IN_PROGRESS': {
       return {
         ...state,
         works: state.works.map(work => {
@@ -55,7 +55,7 @@ export default function appReducer(state = initialState, action) {
         })
       }
     }
-    case 'works/deleteWork': {
+    case 'DELETE_WORK': {
       return {
         ...state,
         works: state.works.filter(work => work.key !== action.payload)
