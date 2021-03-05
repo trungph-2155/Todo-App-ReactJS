@@ -1,5 +1,8 @@
 const initialState = {
-  works: []
+  works: [],
+  fetching: true,
+  weather: null,
+  error: null
 }
 
 function nextWorkKey(works) {
@@ -61,6 +64,12 @@ export default function rootReducer(state = initialState, action) {
         works: state.works.filter(work => work.key !== action.payload)
       }
     }
+    case 'FETCH_WEATHER_REQUEST':
+      return { ...state, fetching: true, error: null };
+    case 'FETCH_WEATHER_SUCCESS':
+      return { ...state, fetching: false, weather: action.weather, };
+    case 'FETCH_WEATHER_FAILURE':
+      return { ...state, fetching: false, weather: null, error: action.error};
     default:
       return state;
   }
